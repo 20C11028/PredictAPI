@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-!d#mgo11k6h!zs4$uuu9$2v%+3yb&jj++z+z&%j1)c6#(eor!^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 MODELS = os.path.join(BASE_DIR, 'api/WPCPredictor/models')
 
@@ -122,6 +122,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
