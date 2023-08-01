@@ -1,4 +1,7 @@
+import array
 import json
+
+from rest_framework.response import Response
 
 from api.WPCPredictor.apps import WpcpredictorConfig
 from django.http import JsonResponse, HttpResponse
@@ -82,18 +85,30 @@ class call_model(APIView):
             inputQA = inputQA.astype(float)
             vector = scaler.transform([inputQA])
             prediction = model.predict(vector)
-            response = dict()
+            responses = []
             if cluster == 2:
                 cluster_wpcs = [2008, 2118, 2119]
                 for i in range(len(cluster_wpcs)):
-                    response[cluster_wpcs[i]] = f'{prediction[0][i] * 100:.2f}%'
+                    # response[cluster_wpcs[i]] = f'{prediction[0][i] * 100:.2f}%'
+                    response = dict()
+                    response["wpc"] = cluster_wpcs[i]
+                    response["percentage"] = f'{prediction[0][i] * 100:.2f}'
+                    responses.append(response)
             elif cluster == 3:
                 cluster_wpcs = [2109, 7004]
                 for i in range(len(cluster_wpcs)):
-                    response[cluster_wpcs[i]] = f'{prediction[0][i] * 100:.2f}%'
+                    # response[cluster_wpcs[i]] = f'{prediction[0][i] * 100:.2f}%'
+                    response = dict()
+                    response["wpc"] = cluster_wpcs[i]
+                    response["percentage"] = f'{prediction[0][i] * 100:.2f}'
+                    responses.append(response)
             elif cluster == 6:
                 cluster_wpcs = [2001, 2051, 2052, 2053]
                 for i in range(len(cluster_wpcs)):
-                    response[cluster_wpcs[i]] = f'{prediction[0][i] * 100:.2f}%'
+                    # response[cluster_wpcs[i]] = f'{prediction[0][i] * 100:.2f}%'
+                    response = dict()
+                    response["wpc"] = cluster_wpcs[i]
+                    response["percentage"] = f'{prediction[0][i] * 100:.2f}'
+                    responses.append(response)
 
-            return JsonResponse(response)
+            return HttpResponse(json.dumps(responses))
