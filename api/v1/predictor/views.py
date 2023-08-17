@@ -23,7 +23,8 @@ class call_model(APIView):
                 cluster = 3
             elif ('2006' in WPCs) & ('2110' in WPCs):
                 cluster = 4
-            elif ('3020' in WPCs) & ('2121' in WPCs):
+            elif ('2910' in WPCs) & ('2901' in WPCs) & ('2911' in WPCs) & ('2912' in WPCs) & ('2913' in WPCs) \
+                    & ('3020' in WPCs) & ('3021' in WPCs) & ('2107' in WPCs):
                 cluster = 5
             elif ('2001' in WPCs) & ('2051' in WPCs) & ('2052' in WPCs) & ('2053' in WPCs):
                 cluster = 6
@@ -123,7 +124,7 @@ class call_model(APIView):
                     response["percentage"] = f'{prediction[0][i] * 100:.2f}'
                     responses.append(response)
             elif cluster == 5:
-                cluster_wpcs = [3020, 2121]
+                cluster_wpcs = [2910, 2901, 2911, 2912, 2913, 3020, 3021, 2107]
                 for i in range(len(cluster_wpcs)):
                     # response[cluster_wpcs[i]] = f'{prediction[0][i] * 100:.2f}%'
                     response = dict()
