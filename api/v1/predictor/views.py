@@ -28,6 +28,8 @@ class call_model(APIView):
                 cluster = 5
             elif ('2001' in WPCs) & ('2051' in WPCs) & ('2052' in WPCs) & ('2053' in WPCs):
                 cluster = 6
+            elif ('3020' in WPCs) & ('2121' in WPCs) & ('3622' in WPCs) & ('3615' in WPCs) & ('3616' in WPCs):
+                cluster = 7
             features = ['PCPDensity', 'PCPhysicalStateSolid2', 'PCPPhysicalStateLiquid2', 'PCPPhysicalStateSludge2',
                             'PCPPhysicalStateGas2', 'PCPPhysicalStateAsh2', 'PCPPhysicalStatePowder2',
                             'PCPPhysicalStateSolidPercent', 'PCPPhysicalStateLiquidPercent',
@@ -85,6 +87,10 @@ class call_model(APIView):
                 scaler = WpcpredictorConfig.scaler_6
                 model = WpcpredictorConfig.model_6
 
+            elif cluster == 7:
+                scaler = WpcpredictorConfig.scaler_7
+                model = WpcpredictorConfig.model_7
+
             inputQA = np.array([])
             for f in features:
                 f = qa[f]
@@ -133,6 +139,14 @@ class call_model(APIView):
                     responses.append(response)
             elif cluster == 6:
                 cluster_wpcs = [2001, 2051, 2052, 2053]
+                for i in range(len(cluster_wpcs)):
+                    # response[cluster_wpcs[i]] = f'{prediction[0][i] * 100:.2f}%'
+                    response = dict()
+                    response["wpc"] = cluster_wpcs[i]
+                    response["percentage"] = f'{prediction[0][i] * 100:.2f}'
+                    responses.append(response)
+            elif cluster == 7:
+                cluster_wpcs = [3020, 2121, 3622, 3615, 3616]
                 for i in range(len(cluster_wpcs)):
                     # response[cluster_wpcs[i]] = f'{prediction[0][i] * 100:.2f}%'
                     response = dict()
