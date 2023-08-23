@@ -19,17 +19,37 @@ class call_model(APIView):
             cluster = 0
             if ('2008' in WPCs) & ('2118' in WPCs) & ('2119' in WPCs):
                 cluster = 2
+                scaler = WpcpredictorConfig.scaler_2
+                model = WpcpredictorConfig.model_2
             elif ('2109' in WPCs) & ('7004' in WPCs):
                 cluster = 3
+                scaler = WpcpredictorConfig.scaler_3
+                model = WpcpredictorConfig.model_3
             elif ('2006' in WPCs) & ('2110' in WPCs):
                 cluster = 4
+                scaler = WpcpredictorConfig.scaler_4
+                model = WpcpredictorConfig.model_4
             elif ('2910' in WPCs) & ('2901' in WPCs) & ('2911' in WPCs) & ('2912' in WPCs) & ('2913' in WPCs) \
                     & ('3020' in WPCs) & ('3021' in WPCs) & ('2107' in WPCs):
                 cluster = 5
+                scaler = WpcpredictorConfig.scaler_5
+                model = WpcpredictorConfig.model_5
             elif ('2001' in WPCs) & ('2051' in WPCs) & ('2052' in WPCs) & ('2053' in WPCs):
                 cluster = 6
+                scaler = WpcpredictorConfig.scaler_6
+                model = WpcpredictorConfig.model_6
             elif ('3020' in WPCs) & ('2121' in WPCs) & ('3622' in WPCs) & ('3615' in WPCs) & ('3616' in WPCs):
                 cluster = 7
+                scaler = WpcpredictorConfig.scaler_7
+                model = WpcpredictorConfig.model_7
+            elif ('3003' in WPCs) & ('3004' in WPCs) & ('3009' in WPCs):
+                cluster = 8
+                scaler = WpcpredictorConfig.scaler_8
+                model = WpcpredictorConfig.model_8
+            elif ('7500' in WPCs) & ('7042' in WPCs):
+                cluster = 9
+                scaler = WpcpredictorConfig.scaler_9
+                model = WpcpredictorConfig.model_9
             features = ['PCPDensity', 'PCPhysicalStateSolid2', 'PCPPhysicalStateLiquid2', 'PCPPhysicalStateSludge2',
                             'PCPPhysicalStateGas2', 'PCPPhysicalStateAsh2', 'PCPPhysicalStatePowder2',
                             'PCPPhysicalStateSolidPercent', 'PCPPhysicalStateLiquidPercent',
@@ -67,29 +87,6 @@ class call_model(APIView):
                             'IsNoSampleTaken', 'Is_US_EPA40_CFR26120', 'StateUniversalWaste', 'product_or_coproduct',
                             'recycle_or_reuse', 'OneTimeNumberNeeded', 'MedicalWaste',
                             'regulatory_information_edited_fields']
-            if cluster == 2:
-                scaler = WpcpredictorConfig.scaler_2
-                model = WpcpredictorConfig.model_2
-
-            elif cluster == 3:
-                scaler = WpcpredictorConfig.scaler_3
-                model = WpcpredictorConfig.model_3
-
-            elif cluster == 4:
-                scaler = WpcpredictorConfig.scaler_4
-                model = WpcpredictorConfig.model_4
-
-            elif cluster == 5:
-                scaler = WpcpredictorConfig.scaler_5
-                model = WpcpredictorConfig.model_5
-
-            elif cluster == 6:
-                scaler = WpcpredictorConfig.scaler_6
-                model = WpcpredictorConfig.model_6
-
-            elif cluster == 7:
-                scaler = WpcpredictorConfig.scaler_7
-                model = WpcpredictorConfig.model_7
 
             inputQA = np.array([])
             for f in features:
@@ -147,6 +144,22 @@ class call_model(APIView):
                     responses.append(response)
             elif cluster == 7:
                 cluster_wpcs = [3020, 2121, 3622, 3615, 3616]
+                for i in range(len(cluster_wpcs)):
+                    # response[cluster_wpcs[i]] = f'{prediction[0][i] * 100:.2f}%'
+                    response = dict()
+                    response["wpc"] = cluster_wpcs[i]
+                    response["percentage"] = f'{prediction[0][i] * 100:.2f}'
+                    responses.append(response)
+            elif cluster == 8:
+                cluster_wpcs = [3003, 3004, 3009]
+                for i in range(len(cluster_wpcs)):
+                    # response[cluster_wpcs[i]] = f'{prediction[0][i] * 100:.2f}%'
+                    response = dict()
+                    response["wpc"] = cluster_wpcs[i]
+                    response["percentage"] = f'{prediction[0][i] * 100:.2f}'
+                    responses.append(response)
+            elif cluster == 9:
+                cluster_wpcs = [7500, 7042]
                 for i in range(len(cluster_wpcs)):
                     # response[cluster_wpcs[i]] = f'{prediction[0][i] * 100:.2f}%'
                     response = dict()
