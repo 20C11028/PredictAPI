@@ -61,7 +61,7 @@ class call_model(APIView):
                 scaler = WpcpredictorConfig.scaler_11
                 model = WpcpredictorConfig.model_11
             elif ('2005' in WPCs) & ('6700' in WPCs):
-                cluster = 10
+                cluster = 12
                 scaler = WpcpredictorConfig.scaler_12
                 model = WpcpredictorConfig.model_12
 
