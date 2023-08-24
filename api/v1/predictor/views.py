@@ -54,6 +54,16 @@ class call_model(APIView):
                 cluster = 10
                 scaler = WpcpredictorConfig.scaler_10
                 model = WpcpredictorConfig.model_10
+            elif ('3000' in WPCs) & ('3001' in WPCs) & ('3002' in WPCs) & ('3025' in WPCs) & ('3031' in WPCs) & ('3032' in WPCs) \
+                    & ('3101' in WPCs) & ('3102' in WPCs) & ('3103' in WPCs) & ('3600' in WPCs) & ('3601' in WPCs) \
+                    & ('3603' in WPCs) & ('3604' in WPCs) & ('3617' in WPCs) & ('3620' in WPCs) & ('3621' in WPCs):
+                cluster = 11
+                scaler = WpcpredictorConfig.scaler_11
+                model = WpcpredictorConfig.model_11
+            elif ('2005' in WPCs) & ('6700' in WPCs):
+                cluster = 10
+                scaler = WpcpredictorConfig.scaler_12
+                model = WpcpredictorConfig.model_12
 
             features = ['PCPDensity', 'PCPhysicalStateSolid2', 'PCPPhysicalStateLiquid2', 'PCPPhysicalStateSludge2',
                             'PCPPhysicalStateGas2', 'PCPPhysicalStateAsh2', 'PCPPhysicalStatePowder2',
@@ -173,6 +183,22 @@ class call_model(APIView):
                     responses.append(response)
             elif cluster == 10:
                 cluster_wpcs = [2001, 2051, 2052, 2053, 2002, 3016]
+                for i in range(len(cluster_wpcs)):
+                    # response[cluster_wpcs[i]] = f'{prediction[0][i] * 100:.2f}%'
+                    response = dict()
+                    response["wpc"] = cluster_wpcs[i]
+                    response["percentage"] = f'{prediction[0][i] * 100:.2f}'
+                    responses.append(response)
+            elif cluster == 11:
+                cluster_wpcs = [3000, 3001, 3002, 3025, 3031, 3032, 3101, 3102, 3103, 3600, 3601, 3603, 3604, 3617, 3620, 3621]
+                for i in range(len(cluster_wpcs)):
+                    # response[cluster_wpcs[i]] = f'{prediction[0][i] * 100:.2f}%'
+                    response = dict()
+                    response["wpc"] = cluster_wpcs[i]
+                    response["percentage"] = f'{prediction[0][i] * 100:.2f}'
+                    responses.append(response)
+            elif cluster == 12:
+                cluster_wpcs = [2005, 6700]
                 for i in range(len(cluster_wpcs)):
                     # response[cluster_wpcs[i]] = f'{prediction[0][i] * 100:.2f}%'
                     response = dict()
