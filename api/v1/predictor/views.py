@@ -64,6 +64,14 @@ class call_model(APIView):
                 cluster = 12
                 scaler = WpcpredictorConfig.scaler_12
                 model = WpcpredictorConfig.model_12
+            elif ('3050' in WPCs) & ('3012' in WPCs) & ('3608' in WPCs):
+                cluster = 13
+                scaler = WpcpredictorConfig.scaler_13
+                model = WpcpredictorConfig.model_13
+            elif ('3051' in WPCs) & ('3012' in WPCs) & ('3607' in WPCs):
+                cluster = 14
+                scaler = WpcpredictorConfig.scaler_14
+                model = WpcpredictorConfig.model_14
 
             features = ['PCPDensity', 'PCPhysicalStateSolid2', 'PCPPhysicalStateLiquid2', 'PCPPhysicalStateSludge2',
                             'PCPPhysicalStateGas2', 'PCPPhysicalStateAsh2', 'PCPPhysicalStatePowder2',
@@ -199,6 +207,22 @@ class call_model(APIView):
                     responses.append(response)
             elif cluster == 12:
                 cluster_wpcs = [2005, 6700]
+                for i in range(len(cluster_wpcs)):
+                    # response[cluster_wpcs[i]] = f'{prediction[0][i] * 100:.2f}%'
+                    response = dict()
+                    response["wpc"] = cluster_wpcs[i]
+                    response["percentage"] = f'{prediction[0][i] * 100:.2f}'
+                    responses.append(response)
+            elif cluster == 13:
+                cluster_wpcs = [3050, 3012, 3608]
+                for i in range(len(cluster_wpcs)):
+                    # response[cluster_wpcs[i]] = f'{prediction[0][i] * 100:.2f}%'
+                    response = dict()
+                    response["wpc"] = cluster_wpcs[i]
+                    response["percentage"] = f'{prediction[0][i] * 100:.2f}'
+                    responses.append(response)
+            elif cluster == 14:
+                cluster_wpcs = [3051, 3012, 3607]
                 for i in range(len(cluster_wpcs)):
                     # response[cluster_wpcs[i]] = f'{prediction[0][i] * 100:.2f}%'
                     response = dict()

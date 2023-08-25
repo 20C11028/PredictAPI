@@ -18,6 +18,8 @@ class WpcpredictorConfig(AppConfig):
     scaler_10 = joblib.load(os.path.join(settings.MODELS, 'scalers/cluster_10.save'))
     scaler_11 = joblib.load(os.path.join(settings.MODELS, 'scalers/cluster_11.save'))
     scaler_12 = joblib.load(os.path.join(settings.MODELS, 'scalers/cluster_12.save'))
+    scaler_13 = joblib.load(os.path.join(settings.MODELS, 'scalers/cluster_13.save'))
+    scaler_14 = joblib.load(os.path.join(settings.MODELS, 'scalers/cluster_14.save'))
 
     model_2 = tf.keras.models.load_model(os.path.join(settings.MODELS, 'cluster_2'))
     model_3 = tf.keras.models.load_model(os.path.join(settings.MODELS, 'cluster_3'))
@@ -30,4 +32,6 @@ class WpcpredictorConfig(AppConfig):
     model_10 = tf.keras.models.load_model(os.path.join(settings.MODELS, 'cluster_10'))
     model_11 = tf.keras.models.load_model(os.path.join(settings.MODELS, 'cluster_11'))
     model_12 = tf.keras.models.load_model(os.path.join(settings.MODELS, 'cluster_12'))
+    model_13 = tf.keras.models.load_model(os.path.join(settings.MODELS, 'cluster_13'))
+    model_14 = tf.keras.models.load_model(os.path.join(settings.MODELS, 'cluster_14'))
     name = 'api.WPCPredictor'
