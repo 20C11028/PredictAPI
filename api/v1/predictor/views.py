@@ -89,6 +89,30 @@ class call_model(APIView):
                 clusterWPCs = cluster_14
                 scaler = WpcpredictorConfig.scaler_14
                 model = WpcpredictorConfig.model_14
+            elif set(map(str, cluster_15)).issubset(set(WPCs)):
+                clusterWPCs = cluster_15
+                scaler = WpcpredictorConfig.scaler_15
+                model = WpcpredictorConfig.model_15
+            elif set(map(str, cluster_16)).issubset(set(WPCs)):
+                clusterWPCs = cluster_16
+                scaler = WpcpredictorConfig.scaler_16
+                model = WpcpredictorConfig.model_16
+            elif set(map(str, cluster_17)).issubset(set(WPCs)):
+                clusterWPCs = cluster_17
+                scaler = WpcpredictorConfig.scaler_17
+                model = WpcpredictorConfig.model_17
+            elif set(map(str, cluster_18)).issubset(set(WPCs)):
+                clusterWPCs = cluster_18
+                scaler = WpcpredictorConfig.scaler_18
+                model = WpcpredictorConfig.model_18
+            elif set(map(str, cluster_19)).issubset(set(WPCs)):
+                clusterWPCs = cluster_19
+                scaler = WpcpredictorConfig.scaler_19
+                model = WpcpredictorConfig.model_19
+            elif set(map(str, cluster_20)).issubset(set(WPCs)):
+                clusterWPCs = cluster_20
+                scaler = WpcpredictorConfig.scaler_20
+                model = WpcpredictorConfig.model_20
 
             features = ['PCPDensity', 'PCPhysicalStateSolid2', 'PCPPhysicalStateLiquid2', 'PCPPhysicalStateSludge2',
                             'PCPPhysicalStateGas2', 'PCPPhysicalStateAsh2', 'PCPPhysicalStatePowder2',
