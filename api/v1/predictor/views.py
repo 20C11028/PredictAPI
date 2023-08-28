@@ -9,67 +9,98 @@ from rest_framework.views import APIView
 import numpy as np
 
 
+cluster_2 = [2008, 2118, 2119]
+cluster_3 = [2109, 7004]
+cluster_4 = [2006, 2110]  # 2111
+cluster_5 = [2910, 2901, 2911, 2912, 2913, 3020, 3021, 2107]  # 3078
+cluster_6 = [2001, 2051, 2052, 2053, 3015]  # 3960, 3959, 3958
+cluster_7 = [3020, 2121, 3622, 3615, 3616]  # 2108
+cluster_8 = [3003, 3004, 3009]  # 3005, 3052, 3095, 3096
+cluster_9 = [7500, 7042]
+cluster_10 = [2001, 2051, 2052, 2053, 2002, 3016]
+cluster_11 = [3000, 3001, 3002, 3025, 3031, 3032, 3101, 3102, 3103, 3600, 3601, 3603, 3604, 3617, 3620, 3621]
+cluster_12 = [2005, 6700]
+cluster_13 = [3050, 3012, 3608]
+cluster_14 = [3051, 3012, 3607]
+cluster_15 = [2000, 6700, 3094]
+cluster_16 = [7005, 2005, 7002, 5100, 7000, 7030, 7001, 7003]
+cluster_17 = [3104, 3105, 3619]
+cluster_18 = [3006, 3007, 3008, 2002]
+cluster_19 = [3015, 3016, 3017, 3018, 3093, 3609, 3820, 3821, 3822, 3823, 3824, 3825, 3826, 3827]
+cluster_20 = [3802, 3092]
+
+
 class call_model(APIView):
     def post(self, request):
-        global scaler, model
+        global scaler, model, clusterWPCs
         if request.method == 'POST':
-            input = json.loads(request.body)
-            WPCs = np.array(input['wpc'])
-            qa = input['qa']
+            inputJson = json.loads(request.body)
+            WPCs = np.array(inputJson['wpc'])
+            qa = inputJson['qa']
             cluster = 0
-            if ('2008' in WPCs) & ('2118' in WPCs) & ('2119' in WPCs):
+            if set(cluster_2).issubset(set(WPCs)):
                 cluster = 2
+                clusterWPCs = cluster_2
                 scaler = WpcpredictorConfig.scaler_2
                 model = WpcpredictorConfig.model_2
-            elif ('2109' in WPCs) & ('7004' in WPCs):
+            elif set(cluster_3).issubset(set(WPCs)):
                 cluster = 3
+                clusterWPCs = cluster_3
                 scaler = WpcpredictorConfig.scaler_3
                 model = WpcpredictorConfig.model_3
-            elif ('2006' in WPCs) & ('2110' in WPCs):
+            elif set(cluster_4).issubset(set(WPCs)):
                 cluster = 4
+                clusterWPCs = cluster_4
                 scaler = WpcpredictorConfig.scaler_4
                 model = WpcpredictorConfig.model_4
-            elif ('2910' in WPCs) & ('2901' in WPCs) & ('2911' in WPCs) & ('2912' in WPCs) & ('2913' in WPCs) \
-                    & ('3020' in WPCs) & ('3021' in WPCs) & ('2107' in WPCs):
+            elif set(cluster_5).issubset(set(WPCs)):
                 cluster = 5
+                clusterWPCs = cluster_5
                 scaler = WpcpredictorConfig.scaler_5
                 model = WpcpredictorConfig.model_5
-            elif ('2001' in WPCs) & ('2051' in WPCs) & ('2052' in WPCs) & ('2053' in WPCs) & ('3015' in WPCs):
+            elif set(cluster_6).issubset(set(WPCs)):
                 cluster = 6
+                clusterWPCs = cluster_6
                 scaler = WpcpredictorConfig.scaler_6
                 model = WpcpredictorConfig.model_6
-            elif ('3020' in WPCs) & ('2121' in WPCs) & ('3622' in WPCs) & ('3615' in WPCs) & ('3616' in WPCs):
+            elif set(cluster_7).issubset(set(WPCs)):
                 cluster = 7
+                clusterWPCs = cluster_7
                 scaler = WpcpredictorConfig.scaler_7
                 model = WpcpredictorConfig.model_7
-            elif ('3003' in WPCs) & ('3004' in WPCs) & ('3009' in WPCs):
+            elif set(cluster_8).issubset(set(WPCs)):
                 cluster = 8
+                clusterWPCs = cluster_8
                 scaler = WpcpredictorConfig.scaler_8
                 model = WpcpredictorConfig.model_8
-            elif ('7500' in WPCs) & ('7042' in WPCs):
+            elif set(cluster_9).issubset(set(WPCs)):
                 cluster = 9
+                clusterWPCs = cluster_9
                 scaler = WpcpredictorConfig.scaler_9
                 model = WpcpredictorConfig.model_9
-            elif ('2001' in WPCs) & ('2051' in WPCs) & ('2052' in WPCs) & ('2053' in WPCs) & ('2002' in WPCs) & ('3016' in WPCs):
+            elif set(cluster_10).issubset(set(WPCs)):
                 cluster = 10
+                clusterWPCs = cluster_10
                 scaler = WpcpredictorConfig.scaler_10
                 model = WpcpredictorConfig.model_10
-            elif ('3000' in WPCs) & ('3001' in WPCs) & ('3002' in WPCs) & ('3025' in WPCs) & ('3031' in WPCs) & ('3032' in WPCs) \
-                    & ('3101' in WPCs) & ('3102' in WPCs) & ('3103' in WPCs) & ('3600' in WPCs) & ('3601' in WPCs) \
-                    & ('3603' in WPCs) & ('3604' in WPCs) & ('3617' in WPCs) & ('3620' in WPCs) & ('3621' in WPCs):
+            elif set(cluster_11).issubset(set(WPCs)):
                 cluster = 11
+                clusterWPCs = cluster_11
                 scaler = WpcpredictorConfig.scaler_11
                 model = WpcpredictorConfig.model_11
-            elif ('2005' in WPCs) & ('6700' in WPCs):
+            elif set(cluster_12).issubset(set(WPCs)):
                 cluster = 12
+                clusterWPCs = cluster_12
                 scaler = WpcpredictorConfig.scaler_12
                 model = WpcpredictorConfig.model_12
-            elif ('3050' in WPCs) & ('3012' in WPCs) & ('3608' in WPCs):
+            elif set(cluster_13).issubset(set(WPCs)):
                 cluster = 13
+                clusterWPCs = cluster_13
                 scaler = WpcpredictorConfig.scaler_13
                 model = WpcpredictorConfig.model_13
-            elif ('3051' in WPCs) & ('3012' in WPCs) & ('3607' in WPCs):
+            elif set(cluster_14).issubset(set(WPCs)):
                 cluster = 14
+                clusterWPCs = cluster_14
                 scaler = WpcpredictorConfig.scaler_14
                 model = WpcpredictorConfig.model_14
 
@@ -126,107 +157,81 @@ class call_model(APIView):
             prediction = model.predict(vector)
             responses = []
             if cluster == 2:
-                cluster_wpcs = [2008, 2118, 2119]
-                for i in range(len(cluster_wpcs)):
-                    # response[cluster_wpcs[i]] = f'{prediction[0][i] * 100:.2f}%'
+                for i in range(len(clusterWPCs)):
                     response = dict()
-                    response["wpc"] = cluster_wpcs[i]
+                    response["wpc"] = clusterWPCs[i]
                     response["percentage"] = f'{prediction[0][i] * 100:.2f}'
                     responses.append(response)
             elif cluster == 3:
-                cluster_wpcs = [2109, 7004]
-                for i in range(len(cluster_wpcs)):
-                    # response[cluster_wpcs[i]] = f'{prediction[0][i] * 100:.2f}%'
+                for i in range(len(clusterWPCs)):
                     response = dict()
-                    response["wpc"] = cluster_wpcs[i]
+                    response["wpc"] = clusterWPCs[i]
                     response["percentage"] = f'{prediction[0][i] * 100:.2f}'
                     responses.append(response)
             elif cluster == 4:
-                cluster_wpcs = [2006, 2110]
-                for i in range(len(cluster_wpcs)):
-                    # response[cluster_wpcs[i]] = f'{prediction[0][i] * 100:.2f}%'
+                for i in range(len(clusterWPCs)):
                     response = dict()
-                    response["wpc"] = cluster_wpcs[i]
+                    response["wpc"] = clusterWPCs[i]
                     response["percentage"] = f'{prediction[0][i] * 100:.2f}'
                     responses.append(response)
             elif cluster == 5:
-                cluster_wpcs = [2910, 2901, 2911, 2912, 2913, 3020, 3021, 2107]
-                for i in range(len(cluster_wpcs)):
-                    # response[cluster_wpcs[i]] = f'{prediction[0][i] * 100:.2f}%'
+                for i in range(len(clusterWPCs)):
                     response = dict()
-                    response["wpc"] = cluster_wpcs[i]
+                    response["wpc"] = clusterWPCs[i]
                     response["percentage"] = f'{prediction[0][i] * 100:.2f}'
                     responses.append(response)
             elif cluster == 6:
-                cluster_wpcs = [2001, 2051, 2052, 2053, 3015]
-                for i in range(len(cluster_wpcs)):
-                    # response[cluster_wpcs[i]] = f'{prediction[0][i] * 100:.2f}%'
+                for i in range(len(clusterWPCs)):
                     response = dict()
-                    response["wpc"] = cluster_wpcs[i]
+                    response["wpc"] = clusterWPCs[i]
                     response["percentage"] = f'{prediction[0][i] * 100:.2f}'
                     responses.append(response)
             elif cluster == 7:
-                cluster_wpcs = [3020, 2121, 3622, 3615, 3616]
-                for i in range(len(cluster_wpcs)):
-                    # response[cluster_wpcs[i]] = f'{prediction[0][i] * 100:.2f}%'
+                for i in range(len(clusterWPCs)):
                     response = dict()
-                    response["wpc"] = cluster_wpcs[i]
+                    response["wpc"] = clusterWPCs[i]
                     response["percentage"] = f'{prediction[0][i] * 100:.2f}'
                     responses.append(response)
             elif cluster == 8:
-                cluster_wpcs = [3003, 3004, 3009]
-                for i in range(len(cluster_wpcs)):
-                    # response[cluster_wpcs[i]] = f'{prediction[0][i] * 100:.2f}%'
+                for i in range(len(clusterWPCs)):
                     response = dict()
-                    response["wpc"] = cluster_wpcs[i]
+                    response["wpc"] = clusterWPCs[i]
                     response["percentage"] = f'{prediction[0][i] * 100:.2f}'
                     responses.append(response)
             elif cluster == 9:
-                cluster_wpcs = [7500, 7042]
-                for i in range(len(cluster_wpcs)):
-                    # response[cluster_wpcs[i]] = f'{prediction[0][i] * 100:.2f}%'
+                for i in range(len(clusterWPCs)):
                     response = dict()
-                    response["wpc"] = cluster_wpcs[i]
+                    response["wpc"] = clusterWPCs[i]
                     response["percentage"] = f'{prediction[0][i] * 100:.2f}'
                     responses.append(response)
             elif cluster == 10:
-                cluster_wpcs = [2001, 2051, 2052, 2053, 2002, 3016]
-                for i in range(len(cluster_wpcs)):
-                    # response[cluster_wpcs[i]] = f'{prediction[0][i] * 100:.2f}%'
+                for i in range(len(clusterWPCs)):
                     response = dict()
-                    response["wpc"] = cluster_wpcs[i]
+                    response["wpc"] = clusterWPCs[i]
                     response["percentage"] = f'{prediction[0][i] * 100:.2f}'
                     responses.append(response)
             elif cluster == 11:
-                cluster_wpcs = [3000, 3001, 3002, 3025, 3031, 3032, 3101, 3102, 3103, 3600, 3601, 3603, 3604, 3617, 3620, 3621]
-                for i in range(len(cluster_wpcs)):
-                    # response[cluster_wpcs[i]] = f'{prediction[0][i] * 100:.2f}%'
+                for i in range(len(clusterWPCs)):
                     response = dict()
-                    response["wpc"] = cluster_wpcs[i]
+                    response["wpc"] = clusterWPCs[i]
                     response["percentage"] = f'{prediction[0][i] * 100:.2f}'
                     responses.append(response)
             elif cluster == 12:
-                cluster_wpcs = [2005, 6700]
-                for i in range(len(cluster_wpcs)):
-                    # response[cluster_wpcs[i]] = f'{prediction[0][i] * 100:.2f}%'
+                for i in range(len(clusterWPCs)):
                     response = dict()
-                    response["wpc"] = cluster_wpcs[i]
+                    response["wpc"] = clusterWPCs[i]
                     response["percentage"] = f'{prediction[0][i] * 100:.2f}'
                     responses.append(response)
             elif cluster == 13:
-                cluster_wpcs = [3050, 3012, 3608]
-                for i in range(len(cluster_wpcs)):
-                    # response[cluster_wpcs[i]] = f'{prediction[0][i] * 100:.2f}%'
+                for i in range(len(clusterWPCs)):
                     response = dict()
-                    response["wpc"] = cluster_wpcs[i]
+                    response["wpc"] = clusterWPCs[i]
                     response["percentage"] = f'{prediction[0][i] * 100:.2f}'
                     responses.append(response)
             elif cluster == 14:
-                cluster_wpcs = [3051, 3012, 3607]
-                for i in range(len(cluster_wpcs)):
-                    # response[cluster_wpcs[i]] = f'{prediction[0][i] * 100:.2f}%'
+                for i in range(len(clusterWPCs)):
                     response = dict()
-                    response["wpc"] = cluster_wpcs[i]
+                    response["wpc"] = clusterWPCs[i]
                     response["percentage"] = f'{prediction[0][i] * 100:.2f}'
                     responses.append(response)
 
