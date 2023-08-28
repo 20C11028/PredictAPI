@@ -37,69 +37,55 @@ class call_model(APIView):
             inputJson = json.loads(request.body)
             WPCs = np.array(inputJson['wpc'])
             qa = inputJson['qa']
-            cluster = 0
-            if set(cluster_2).issubset(set(WPCs)):
-                cluster = 2
+            if set(map(str, cluster_2)).issubset(set(WPCs)):
                 clusterWPCs = cluster_2
                 scaler = WpcpredictorConfig.scaler_2
                 model = WpcpredictorConfig.model_2
-            elif set(cluster_3).issubset(set(WPCs)):
-                cluster = 3
+            elif set(map(str, cluster_3)).issubset(set(WPCs)):
                 clusterWPCs = cluster_3
                 scaler = WpcpredictorConfig.scaler_3
                 model = WpcpredictorConfig.model_3
-            elif set(cluster_4).issubset(set(WPCs)):
-                cluster = 4
+            elif set(map(str, cluster_4)).issubset(set(WPCs)):
                 clusterWPCs = cluster_4
                 scaler = WpcpredictorConfig.scaler_4
                 model = WpcpredictorConfig.model_4
-            elif set(cluster_5).issubset(set(WPCs)):
-                cluster = 5
+            elif set(map(str, cluster_5)).issubset(set(WPCs)):
                 clusterWPCs = cluster_5
                 scaler = WpcpredictorConfig.scaler_5
                 model = WpcpredictorConfig.model_5
-            elif set(cluster_6).issubset(set(WPCs)):
-                cluster = 6
+            elif set(map(str, cluster_6)).issubset(set(WPCs)):
                 clusterWPCs = cluster_6
                 scaler = WpcpredictorConfig.scaler_6
                 model = WpcpredictorConfig.model_6
-            elif set(cluster_7).issubset(set(WPCs)):
-                cluster = 7
+            elif set(map(str, cluster_7)).issubset(set(WPCs)):
                 clusterWPCs = cluster_7
                 scaler = WpcpredictorConfig.scaler_7
                 model = WpcpredictorConfig.model_7
-            elif set(cluster_8).issubset(set(WPCs)):
-                cluster = 8
+            elif set(map(str, cluster_8)).issubset(set(WPCs)):
                 clusterWPCs = cluster_8
                 scaler = WpcpredictorConfig.scaler_8
                 model = WpcpredictorConfig.model_8
-            elif set(cluster_9).issubset(set(WPCs)):
-                cluster = 9
+            elif set(map(str, cluster_9)).issubset(set(WPCs)):
                 clusterWPCs = cluster_9
                 scaler = WpcpredictorConfig.scaler_9
                 model = WpcpredictorConfig.model_9
-            elif set(cluster_10).issubset(set(WPCs)):
-                cluster = 10
+            elif set(map(str, cluster_10)).issubset(set(WPCs)):
                 clusterWPCs = cluster_10
                 scaler = WpcpredictorConfig.scaler_10
                 model = WpcpredictorConfig.model_10
-            elif set(cluster_11).issubset(set(WPCs)):
-                cluster = 11
+            elif set(map(str, cluster_11)).issubset(set(WPCs)):
                 clusterWPCs = cluster_11
                 scaler = WpcpredictorConfig.scaler_11
                 model = WpcpredictorConfig.model_11
-            elif set(cluster_12).issubset(set(WPCs)):
-                cluster = 12
+            elif set(map(str, cluster_12)).issubset(set(WPCs)):
                 clusterWPCs = cluster_12
                 scaler = WpcpredictorConfig.scaler_12
                 model = WpcpredictorConfig.model_12
-            elif set(cluster_13).issubset(set(WPCs)):
-                cluster = 13
+            elif set(map(str, cluster_13)).issubset(set(WPCs)):
                 clusterWPCs = cluster_13
                 scaler = WpcpredictorConfig.scaler_13
                 model = WpcpredictorConfig.model_13
-            elif set(cluster_14).issubset(set(WPCs)):
-                cluster = 14
+            elif set(map(str, cluster_14)).issubset(set(WPCs)):
                 clusterWPCs = cluster_14
                 scaler = WpcpredictorConfig.scaler_14
                 model = WpcpredictorConfig.model_14
@@ -156,83 +142,10 @@ class call_model(APIView):
             vector = scaler.transform([inputQA])
             prediction = model.predict(vector)
             responses = []
-            if cluster == 2:
-                for i in range(len(clusterWPCs)):
-                    response = dict()
-                    response["wpc"] = clusterWPCs[i]
-                    response["percentage"] = f'{prediction[0][i] * 100:.2f}'
-                    responses.append(response)
-            elif cluster == 3:
-                for i in range(len(clusterWPCs)):
-                    response = dict()
-                    response["wpc"] = clusterWPCs[i]
-                    response["percentage"] = f'{prediction[0][i] * 100:.2f}'
-                    responses.append(response)
-            elif cluster == 4:
-                for i in range(len(clusterWPCs)):
-                    response = dict()
-                    response["wpc"] = clusterWPCs[i]
-                    response["percentage"] = f'{prediction[0][i] * 100:.2f}'
-                    responses.append(response)
-            elif cluster == 5:
-                for i in range(len(clusterWPCs)):
-                    response = dict()
-                    response["wpc"] = clusterWPCs[i]
-                    response["percentage"] = f'{prediction[0][i] * 100:.2f}'
-                    responses.append(response)
-            elif cluster == 6:
-                for i in range(len(clusterWPCs)):
-                    response = dict()
-                    response["wpc"] = clusterWPCs[i]
-                    response["percentage"] = f'{prediction[0][i] * 100:.2f}'
-                    responses.append(response)
-            elif cluster == 7:
-                for i in range(len(clusterWPCs)):
-                    response = dict()
-                    response["wpc"] = clusterWPCs[i]
-                    response["percentage"] = f'{prediction[0][i] * 100:.2f}'
-                    responses.append(response)
-            elif cluster == 8:
-                for i in range(len(clusterWPCs)):
-                    response = dict()
-                    response["wpc"] = clusterWPCs[i]
-                    response["percentage"] = f'{prediction[0][i] * 100:.2f}'
-                    responses.append(response)
-            elif cluster == 9:
-                for i in range(len(clusterWPCs)):
-                    response = dict()
-                    response["wpc"] = clusterWPCs[i]
-                    response["percentage"] = f'{prediction[0][i] * 100:.2f}'
-                    responses.append(response)
-            elif cluster == 10:
-                for i in range(len(clusterWPCs)):
-                    response = dict()
-                    response["wpc"] = clusterWPCs[i]
-                    response["percentage"] = f'{prediction[0][i] * 100:.2f}'
-                    responses.append(response)
-            elif cluster == 11:
-                for i in range(len(clusterWPCs)):
-                    response = dict()
-                    response["wpc"] = clusterWPCs[i]
-                    response["percentage"] = f'{prediction[0][i] * 100:.2f}'
-                    responses.append(response)
-            elif cluster == 12:
-                for i in range(len(clusterWPCs)):
-                    response = dict()
-                    response["wpc"] = clusterWPCs[i]
-                    response["percentage"] = f'{prediction[0][i] * 100:.2f}'
-                    responses.append(response)
-            elif cluster == 13:
-                for i in range(len(clusterWPCs)):
-                    response = dict()
-                    response["wpc"] = clusterWPCs[i]
-                    response["percentage"] = f'{prediction[0][i] * 100:.2f}'
-                    responses.append(response)
-            elif cluster == 14:
-                for i in range(len(clusterWPCs)):
-                    response = dict()
-                    response["wpc"] = clusterWPCs[i]
-                    response["percentage"] = f'{prediction[0][i] * 100:.2f}'
-                    responses.append(response)
+            for i in range(len(clusterWPCs)):
+                response = dict()
+                response["wpc"] = clusterWPCs[i]
+                response["percentage"] = f'{prediction[0][i] * 100:.2f}'
+                responses.append(response)
 
             return HttpResponse(json.dumps(responses))
