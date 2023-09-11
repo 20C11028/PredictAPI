@@ -28,6 +28,10 @@ cluster_17 = [3104, 3105, 3619]
 cluster_18 = [3006, 3007, 3008, 2002]
 cluster_19 = [3015, 3016, 3017, 3018, 3093, 3609, 3820, 3821, 3822, 3823, 3825, 3826]  # 3824, 3827
 cluster_20 = [3802, 3092]
+cluster_21 = [3801, 3091]
+cluster_22 = [2003, 2004, 2102]
+cluster_23 = [3800, 3090]
+cluster_24 = [2101, 2106, 3019, 2150, 2151, 6700]
 
 
 class call_model(APIView):
@@ -113,6 +117,22 @@ class call_model(APIView):
                 clusterWPCs = cluster_20
                 scaler = WpcpredictorConfig.scaler_20
                 model = WpcpredictorConfig.model_20
+            elif set(map(str, cluster_21)).issubset(set(WPCs)):
+                clusterWPCs = cluster_21
+                scaler = WpcpredictorConfig.scaler_21
+                model = WpcpredictorConfig.model_21
+            elif set(map(str, cluster_22)).issubset(set(WPCs)):
+                clusterWPCs = cluster_22
+                scaler = WpcpredictorConfig.scaler_22
+                model = WpcpredictorConfig.model_22
+            elif set(map(str, cluster_23)).issubset(set(WPCs)):
+                clusterWPCs = cluster_23
+                scaler = WpcpredictorConfig.scaler_23
+                model = WpcpredictorConfig.model_23
+            elif set(map(str, cluster_24)).issubset(set(WPCs)):
+                clusterWPCs = cluster_24
+                scaler = WpcpredictorConfig.scaler_24
+                model = WpcpredictorConfig.model_24
 
             features = ['PCPDensity', 'PCPhysicalStateSolid2', 'PCPPhysicalStateLiquid2', 'PCPPhysicalStateSludge2',
                             'PCPPhysicalStateGas2', 'PCPPhysicalStateAsh2', 'PCPPhysicalStatePowder2',
