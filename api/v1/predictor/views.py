@@ -155,14 +155,14 @@ class call_model(APIView):
                 clusterWPCs = cluster_28
                 scaler = WpcpredictorConfig.scaler_28
                 model = WpcpredictorConfig.model_28
-            elif set(map(str, cluster_29)).issubset(set(WPCs)):
-                clusterWPCs = cluster_29
-                scaler = WpcpredictorConfig.scaler_29
-                model = WpcpredictorConfig.model_29
             elif set(map(str, cluster_30)).issubset(set(WPCs)):
                 clusterWPCs = cluster_30
                 scaler = WpcpredictorConfig.scaler_30
                 model = WpcpredictorConfig.model_30
+            elif set(map(str, cluster_29)).issubset(set(WPCs)):
+                clusterWPCs = cluster_29
+                scaler = WpcpredictorConfig.scaler_29
+                model = WpcpredictorConfig.model_29
 
             features = ['PCPDensity', 'PCPhysicalStateSolid2', 'PCPPhysicalStateLiquid2', 'PCPPhysicalStateSludge2',
                             'PCPPhysicalStateGas2', 'PCPPhysicalStateAsh2', 'PCPPhysicalStatePowder2',
