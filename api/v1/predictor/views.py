@@ -32,6 +32,12 @@ cluster_21 = [3801, 3091]
 cluster_22 = [2003, 2004, 2102]
 cluster_23 = [3800, 3090]
 cluster_24 = [2101, 2106, 3019, 2150, 2151, 6700]
+cluster_25 = [2118, 2119, 2008]
+cluster_26 = [2110, 2006]  # 2111
+cluster_27 = [2009, 2010]
+cluster_28 = [2109, 7004]
+cluster_29 = [7200, 7201]
+cluster_30 = [7200, 7201, 7203, 7204, 7205, 7206]
 
 
 class call_model(APIView):
@@ -133,6 +139,30 @@ class call_model(APIView):
                 clusterWPCs = cluster_24
                 scaler = WpcpredictorConfig.scaler_24
                 model = WpcpredictorConfig.model_24
+            elif set(map(str, cluster_25)).issubset(set(WPCs)):
+                clusterWPCs = cluster_25
+                scaler = WpcpredictorConfig.scaler_25
+                model = WpcpredictorConfig.model_25
+            elif set(map(str, cluster_26)).issubset(set(WPCs)):
+                clusterWPCs = cluster_26
+                scaler = WpcpredictorConfig.scaler_26
+                model = WpcpredictorConfig.model_26
+            elif set(map(str, cluster_27)).issubset(set(WPCs)):
+                clusterWPCs = cluster_27
+                scaler = WpcpredictorConfig.scaler_27
+                model = WpcpredictorConfig.model_27
+            elif set(map(str, cluster_28)).issubset(set(WPCs)):
+                clusterWPCs = cluster_28
+                scaler = WpcpredictorConfig.scaler_28
+                model = WpcpredictorConfig.model_28
+            elif set(map(str, cluster_29)).issubset(set(WPCs)):
+                clusterWPCs = cluster_29
+                scaler = WpcpredictorConfig.scaler_29
+                model = WpcpredictorConfig.model_29
+            elif set(map(str, cluster_30)).issubset(set(WPCs)):
+                clusterWPCs = cluster_30
+                scaler = WpcpredictorConfig.scaler_30
+                model = WpcpredictorConfig.model_30
 
             features = ['PCPDensity', 'PCPhysicalStateSolid2', 'PCPPhysicalStateLiquid2', 'PCPPhysicalStateSludge2',
                             'PCPPhysicalStateGas2', 'PCPPhysicalStateAsh2', 'PCPPhysicalStatePowder2',
