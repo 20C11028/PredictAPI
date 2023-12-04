@@ -7,6 +7,9 @@ import joblib
 
 
 class WpcpredictorConfig(AppConfig):
+    ohe = joblib.load(os.path.join(settings.MODELS, 'OneHotEncoder/ohe.save'))
+
+    scaler_1 = joblib.load(os.path.join(settings.MODELS, 'scalers/cluster_1.save'))
     scaler_2 = joblib.load(os.path.join(settings.MODELS, 'scalers/cluster_2.save'))
     scaler_3 = joblib.load(os.path.join(settings.MODELS, 'scalers/cluster_3.save'))
     scaler_4 = joblib.load(os.path.join(settings.MODELS, 'scalers/cluster_4.save'))
@@ -41,6 +44,7 @@ class WpcpredictorConfig(AppConfig):
     scaler_33 = joblib.load(os.path.join(settings.MODELS, 'scalers/cluster_33.save'))
     scaler_34 = joblib.load(os.path.join(settings.MODELS, 'scalers/cluster_34.save'))
 
+    model_1 = tf.keras.models.load_model(os.path.join(settings.MODELS, 'cluster_1'))
     model_2 = tf.keras.models.load_model(os.path.join(settings.MODELS, 'cluster_2'))
     model_3 = tf.keras.models.load_model(os.path.join(settings.MODELS, 'cluster_3'))
     model_4 = tf.keras.models.load_model(os.path.join(settings.MODELS, 'cluster_4'))
@@ -74,4 +78,13 @@ class WpcpredictorConfig(AppConfig):
     model_32 = tf.keras.models.load_model(os.path.join(settings.MODELS, 'cluster_32'))
     model_33 = tf.keras.models.load_model(os.path.join(settings.MODELS, 'cluster_33'))
     model_34 = tf.keras.models.load_model(os.path.join(settings.MODELS, 'cluster_34'))
+
+    # PCP Models
+    PCPViscosity_Model = tf.keras.models.load_model(os.path.join(settings.MODELS, 'PCP_Models/PCPViscosity_Model'))
+    PCPBTUValue_Model = tf.keras.models.load_model(os.path.join(settings.MODELS, 'PCP_Models/PCPBTUValue_Model'))
+    PCpH_Model = tf.keras.models.load_model(os.path.join(settings.MODELS, 'PCP_Models/PCpH_Model'))
+    PCFlashPoint_Model = tf.keras.models.load_model(os.path.join(settings.MODELS, 'PCP_Models/PCFlashPoint_Model'))
+    PCFlashPoint_Method_Model = tf.keras.models.load_model(os.path.join(settings.MODELS, 'PCP_Models'
+                                                                                         '/PCFlashPoint_Method_Model'))
+
     name = 'api.WPCPredictor'
