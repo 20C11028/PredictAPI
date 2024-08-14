@@ -7,10 +7,11 @@ from api.WPCPredictor.apps import WpcpredictorConfig
 from django.http import JsonResponse, HttpResponse
 from rest_framework.views import APIView
 import numpy as np
+import pandas as pd
 
-
-cluster_2 = [2008, 2118, 2119]
-cluster_3 = [2109, 7004]
+cluster_1 = [3000, 3030, 3101, 2013]  # 3280
+cluster_2 = [3001, 3090, 3600, 3601, 3603, 3604, 3800]
+cluster_3 = [3002, 3031, 3091, 3102, 3617, 3801]
 cluster_4 = [2006, 2110]  # 2111
 cluster_5 = [2910, 2901, 2911, 2912, 2913, 3020, 3021, 2107]  # 3078
 cluster_6 = [2001, 2051, 2052, 2053, 3015]  # 3960, 3959, 3958
@@ -44,6 +45,16 @@ cluster_33 = [2005, 2103]
 cluster_34 = [2107, 3021, 3509, 3631]
 
 
+def convert_tf_yn(dataframe):
+    for col in dataframe.columns:
+        if (True in dataframe[col].values) | (False in dataframe[col].values):
+            dataframe[col] = dataframe[col].apply(float)
+        if ('Yes' in dataframe[col].values) | ('No' in dataframe[col].values):
+            dataframe[col] = dataframe[col].map({'Yes': 1, 'No': 0})
+            dataframe[col].apply(float)
+    return dataframe
+
+
 class call_model(APIView):
     def post(self, request):
         global scaler, model, clusterWPCs
@@ -51,7 +62,12 @@ class call_model(APIView):
             inputJson = json.loads(request.body)
             WPCs = np.array(inputJson['wpc'])
             qa = inputJson['qa']
-            if set(map(str, cluster_2)).issubset(set(WPCs)):
+            ohe = WpcpredictorConfig.ohe
+            if set(map(str, cluster_1)).issubset(set(WPCs)):
+                clusterWPCs = cluster_1
+                scaler = WpcpredictorConfig.scaler_1
+                model = WpcpredictorConfig.model_1
+            elif set(map(str, cluster_2)).issubset(set(WPCs)):
                 clusterWPCs = cluster_2
                 scaler = WpcpredictorConfig.scaler_2
                 model = WpcpredictorConfig.model_2
@@ -185,55 +201,73 @@ class call_model(APIView):
                 model = WpcpredictorConfig.model_34
 
             features = ['PCPDensity', 'PCPhysicalStateSolid2', 'PCPPhysicalStateLiquid2', 'PCPPhysicalStateSludge2',
-                            'PCPPhysicalStateGas2', 'PCPPhysicalStateAsh2', 'PCPPhysicalStatePowder2',
-                            'PCPPhysicalStateSolidPercent', 'PCPPhysicalStateLiquidPercent',
-                            'PCPPhysicalStateSludgePercent', 'PCPPhysicalStateGasPercent', 'PCPPhysicalStateAshPercent',
-                            'PCPPhysicalStatePowderPercent', 'PCPOtherPropertiesExplosive',
-                            'PCPOtherPropertiesRadioactive', 'PCPOtherPropertiesThermallyUnstable',
-                            'PCPOtherPropertiesShockSensitive',
-                            'PCPOtherPropertiesPyrophoric', 'PCPOtherPropertiesOxidizer',
-                            'PCPOtherPropertiesWaterReactive',
-                            'PCPOtherPropertiesAirReactive', 'PCPOtherPropertiesReactiveCyanides',
-                            'PCPOtherPropertiesReactiveSulfides', 'PCPOtherPropertiesPolymerizable',
-                            'PCPOtherPropertiesPolymerizableInhibited', 'PCPOtherPropertiesAbestosFriable',
-                            'PCPOtherPropertiesAbestosNonFriable', 'PCPOtherPropertiesMetalFines',
-                            'PCPOtherPropertiesOrganaicPeroxides', 'PCPOtherPropertiesDioxins',
-                            'PCPOtherPropertiesFurans',
-                            'PCPOtherPropertiesNORM', 'PCPOtherPropertiesBiohazard', 'PCPOtherPropertiesNONE',
-                            'RegulatoryRestrictedUnderLDR', 'RegulatoryUHCs', 'Regulatory500PPMVOC',
-                            'RegulatoryAlternativeStandardsofSoil', 'PCPPhysicalStateSemiSolid2',
-                            'PCPPhysicalStateSemiSolidPercent', 'PCNumberOfPhases_Layer', 'PCNumberOfPhases_Layer_Mid',
-                            'PCPOtherPropertiesPesticides', 'subfield_for_copy', 'Min', 'Max',
-                            'ShippingAndPackagingUSDOT',
-                            'GenericFlag', 'RQFlag', 'MixtureFlag', 'SolutionFlag',
-                            'ShippingAndPackagingWasteCombination',
-                            'TransBulkType_Other', 'TransBulkType_Railcar', 'TransBulkType_RollOff',
-                            'TransBulkType_TankTruck', 'TransBulkType_VacBox', 'TransContainer_BoxCartonCase',
-                            'TransContainer_CubicYardBox', 'TransContainer_Drum', 'TransContainer_Other',
-                            'TransContainer_PortableToteTank', 'WCHazardous', 'WCHazardousF', 'WCHazardousK',
-                            'WCHazardousP', 'WCHazardousU', 'WCHazardousIgnitable', 'WCHazardousCorrosive',
-                            'WCHazardousReactive', 'WCHazardousToxic', 'UniversalWaste', 'UsedOil',
-                            'TSCARegulatedPCBWaste',
-                            'HazardousWaste', 'RCRAExempt', 'CERCLARegulatedWaste', 'BenzeneNESHAPWaste',
-                            'HalogenatedOrganicCompound', 'WasteDeterminationBasedOn',
-                            'WasteDetermination_GenKnowledge',
-                            'WasteDetermination_SDS', 'WasteDetermination_WasteAnylysis', 'CaliforniaStateWasteCode',
-                            'IsNoSampleTaken', 'Is_US_EPA40_CFR26120', 'StateUniversalWaste', 'product_or_coproduct',
-                            'recycle_or_reuse', 'OneTimeNumberNeeded', 'MedicalWaste',
-                            'regulatory_information_edited_fields']
+                        'PCPPhysicalStateGas2', 'PCPPhysicalStateAsh2', 'PCPPhysicalStatePowder2',
+                        'PCPPhysicalStateSolidPercent', 'PCPPhysicalStateLiquidPercent',
+                        'PCPPhysicalStateSludgePercent', 'PCPPhysicalStateGasPercent', 'PCPPhysicalStateAshPercent',
+                        'PCPPhysicalStatePowderPercent', 'PCPOtherPropertiesExplosive', 'PCPOtherPropertiesRadioactive',
+                        'PCPOtherPropertiesThermallyUnstable', 'PCPOtherPropertiesShockSensitive',
+                        'PCPOtherPropertiesPyrophoric', 'PCPOtherPropertiesOxidizer', 'PCPOtherPropertiesWaterReactive',
+                        'PCPOtherPropertiesAirReactive', 'PCPOtherPropertiesReactiveCyanides',
+                        'PCPOtherPropertiesReactiveSulfides', 'PCPOtherPropertiesPolymerizable',
+                        'PCPOtherPropertiesPolymerizableInhibited', 'PCPOtherPropertiesAbestosFriable',
+                        'PCPOtherPropertiesAbestosNonFriable', 'PCPOtherPropertiesMetalFines',
+                        'PCPOtherPropertiesOrganaicPeroxides', 'PCPOtherPropertiesDioxins', 'PCPOtherPropertiesFurans',
+                        'PCPOtherPropertiesNORM', 'PCPOtherPropertiesBiohazard', 'PCPOtherPropertiesNONE',
+                        'RegulatoryRestrictedUnderLDR', 'RegulatoryUHCs', 'Regulatory500PPMVOC',
+                        'RegulatoryAlternativeStandardsofSoil', 'PCPPhysicalStateSemiSolid2',
+                        'PCPPhysicalStateSemiSolidPercent', 'PCNumberOfPhases_Layer', 'PCNumberOfPhases_Layer_Mid',
+                        'PCPOtherPropertiesPesticides', 'subfield_for_copy', 'Min', 'Max', 'ShippingAndPackagingUSDOT',
+                        'GenericFlag', 'RQFlag', 'MixtureFlag', 'SolutionFlag', 'ShippingAndPackagingWasteCombination',
+                        'TransBulkType_Other', 'TransBulkType_Railcar', 'TransBulkType_RollOff',
+                        'TransBulkType_TankTruck', 'TransBulkType_VacBox', 'TransContainer_BoxCartonCase',
+                        'TransContainer_CubicYardBox', 'TransContainer_Drum', 'TransContainer_Other',
+                        'TransContainer_PortableToteTank', 'WCHazardous', 'WCHazardousF', 'WCHazardousK',
+                        'WCHazardousP', 'WCHazardousU', 'WCHazardousIgnitable', 'WCHazardousCorrosive',
+                        'WCHazardousReactive', 'WCHazardousToxic', 'UniversalWaste', 'UsedOil', 'TSCARegulatedPCBWaste',
+                        'HazardousWaste', 'RCRAExempt', 'CERCLARegulatedWaste', 'BenzeneNESHAPWaste',
+                        'HalogenatedOrganicCompound', 'WasteDetermination_GenKnowledge', 'WasteDetermination_SDS',
+                        'WasteDetermination_WasteAnylysis', 'CaliforniaStateWasteCode', 'IsNoSampleTaken',
+                        'Is_US_EPA40_CFR26120', 'StateUniversalWaste', 'product_or_coproduct', 'recycle_or_reuse',
+                        'OneTimeNumberNeeded', 'MedicalWaste', 'PCPOdor', 'PCPBTUValue', 'PCPViscosity', 'PCpH',
+                        'PCFlashPoint',
+                        'RegulatoryLDRSubcategory', 'PCFlashPoint_Method', 'PCFlashPoint_Actual',
+                        'other_option',
+                        'pcpodor_strong_select', 'hazardouswastenof', 'StateWasteCode', 'OriginCode',
+                        'EPAFormCode', 'EPASourceCode']
 
-            inputQA = np.array([])
+            inputDict = dict()
             for f in features:
-                f = qa[f]
-                if (f == 'Yes') | (f == 'True'):
-                    f = 1
-                elif (f == 'No') | (f == 'False'):
-                    f = 0
-                elif f == '':
-                    f = 0
-                inputQA = np.append(inputQA, f)
-            inputQA = inputQA.astype(float)
-            vector = scaler.transform([inputQA])
+                if qa[f] == '':
+                    inputDict[f] = np.nan
+                else:
+                    inputDict[f] = [qa[f]]
+            input_dataframe = pd.DataFrame.from_dict(inputDict)
+            input_dataframe = input_dataframe.replace(r'^\s*$', np.nan, regex=True)
+            input_dataframe = convert_tf_yn(input_dataframe)
+            # Categorical columns
+            categorical_features = ['PCPOdor', 'PCPBTUValue', 'PCPViscosity', 'PCpH', 'PCFlashPoint',
+                                    'RegulatoryLDRSubcategory', 'PCFlashPoint_Method', 'PCFlashPoint_Actual',
+                                    'other_option',
+                                    'pcpodor_strong_select', 'hazardouswastenof', 'StateWasteCode', 'OriginCode',
+                                    'EPAFormCode', 'EPASourceCode']
+            for f in categorical_features:
+                input_dataframe[f] = input_dataframe[f].astype(object)
+
+            numeric_feature = ['Max', 'Min',
+                               'PCNumberOfPhases_Layer', 'PCPDensity', 'PCPPhysicalStateLiquidPercent']
+            for f in numeric_feature:
+                input_dataframe[f] = input_dataframe[f].astype(float)
+            input_dataframe = pd.concat(
+                (input_dataframe, pd.DataFrame(ohe.transform(input_dataframe[categorical_features]),
+                                               columns=ohe.get_feature_names_out(categorical_features))))
+            input_dataframe = input_dataframe.drop(
+                columns=categorical_features, axis=1)
+            input_dataframe = input_dataframe.fillna(0)
+            input_dataframe = input_dataframe.select_dtypes(include=['int', 'float'])
+            profile_data = pd.read_csv('D:\Projects\Python\Wastelinq\AnalysisWasteProfile\data\cluster_1.csv',
+                                       low_memory=False)
+            # print(profile_data.columns.symmetric_difference(input_dataframe.columns))
+            vector = scaler.transform([input_dataframe.iloc[0].values])
             prediction = model.predict(vector)
             responses = []
             for i in range(len(clusterWPCs)):
